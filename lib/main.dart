@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'anim/counter_animation.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,46 +24,23 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
+class _MyHomePageState extends State<MyHomePage> {
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller = new AnimationController(
-        duration: const Duration(milliseconds: 1800), vsync: this);
 
-    animation =
-    new CurvedAnimation(parent: controller, curve: Curves.easeIn)
-      ..addListener(() {
-        setState(() {});
-        debugPrint("Running ${controller.value}");
-      });
-    controller.forward();
   }
 
     @override
     Widget build(BuildContext context) {
       return Scaffold(
-        body: Center(
-          child: Text('Hello World',
-          style: TextStyle(
-            fontSize: 19.0 * animation.value
-          ),),
-
-        ),
+        body: new Center(child: new CounterAnimator())
       );
 
-
     }
-    @override
-  void dispose() {
-    // TODO: implement dispose
-      controller.dispose();
-    super.dispose();
-  }
+
   }
 
