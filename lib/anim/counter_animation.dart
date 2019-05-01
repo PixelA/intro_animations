@@ -19,8 +19,27 @@ class _CounterAnimatorState extends State<CounterAnimator>
 
     _controller =
     new AnimationController(duration: Duration(seconds: 3), vsync: this);
+    animation = new Tween(begin: 0.0, end: 10.0).animate(_controller)
 
-    animation = new CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+    ..addStatusListener((status) {
+      if(status == AnimationStatus.completed) {
+        _controller.reverse(from: 5.0);
+      } else if(status == AnimationStatus.reverse) {
+        this.setState(() {
+          _counter = _counter - 400;
+          debugPrint("Reducing $_counter");
+        });
+      }
+    })
+      ..addListener((){
+      this.setState((){
+        debugPrint("Animation Tween ${animation.value}");
+
+    });
+
+    });
+
+    //animation = new CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
     _controller.addListener(() {
       this.setState(() {
@@ -43,7 +62,7 @@ class _CounterAnimatorState extends State<CounterAnimator>
         _controller.isAnimating
             ? (_counter).toStringAsFixed(2)
             : "Lets's Begin",
-        style: TextStyle(fontSize: 24.0 * _controller.value + 16.0),
+        style: TextStyle(fontSize: 24.0 * animation.value + 16.0),
       ),
       onTap: () {
         _controller.forward(from: 0.0);
@@ -55,3 +74,4 @@ class _CounterAnimatorState extends State<CounterAnimator>
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 
 }
+
