@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intro_animations/anim/chain_animation.dart';
 import 'anim/counter_animation.dart';
 
 void main() => runApp(MyApp());
@@ -24,24 +25,40 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> animation;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    controller = AnimationController(
+        duration: Duration(milliseconds: 1800), vsync: this);
 
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.forward();
+      }
+    });
+    controller.forward();
   }
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        body: new Center(child: new CounterAnimator())
-      );
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: new ChainAnimation(animation: animation,),
+    );
 
-    }
-    //Create a animation class file
-
+//    return ChainAnimation(
+//      animation: animation,
+//    );
+    //return Scaffold( body: new Center(child: new CounterAnimator()));
   }
+  //Create a animation class file
 
+}

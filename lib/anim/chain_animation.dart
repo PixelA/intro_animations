@@ -5,6 +5,7 @@ class ChainAnimation extends AnimatedWidget {
   static final _opacityTween = Tween<double>(begin: 0.1, end: 1.0);
   static final _sizeTween = Tween<double>(begin: 0.0, end: 175.0);
 
+
   ChainAnimation({Key key, Animation<double> animation})
       : super(key: key, listenable: animation);
 
@@ -19,7 +20,13 @@ class ChainAnimation extends AnimatedWidget {
           margin: EdgeInsets.symmetric(vertical: 10.0),
           height: _sizeTween.evaluate(animation),
           width: _sizeTween.evaluate(animation),
-          child: FlatButton(onPressed: () {}, child: Text("Button")),
+          child: FlatButton(onPressed: () {
+            print("Hello There");
+
+          },
+              color: Colors.blue,
+
+              child: Text("Button")),
         ),
       ),
     );
